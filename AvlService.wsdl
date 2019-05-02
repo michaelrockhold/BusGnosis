@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://avl.transit.ws.its.washington.edu" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://avl.transit.ws.its.washington.edu" xmlns:intf="http://avl.transit.ws.its.washington.edu" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><wsdl:types><schema targetNamespace="http://avl.transit.ws.its.washington.edu" xmlns="http://www.w3.org/2001/XMLSchema"><import namespace="http://schemas.xmlsoap.org/soap/encoding/"/><complexType name="AvlReport"><sequence><element name="routeID" type="xsd:int"/><element name="longitude" type="xsd:double"/><element name="vehicleID" type="xsd:int"/><element name="latitude" type="xsd:double"/><element name="y" type="xsd:int"/><element name="x" type="xsd:int"/><element name="heading" type="xsd:int"/><element name="absoluteTime" type="xsd:long"/></sequence></complexType><complexType name="ArrayOf_xsd_string"><complexContent><restriction base="soapenc:Array"><attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]"/></restriction></complexContent></complexType><complexType name="ArrayOfAvlReport"><complexContent><restriction base="soapenc:Array"><attribute ref="soapenc:arrayType" wsdl:arrayType="impl:AvlReport[]"/></restriction></complexContent></complexType></schema></wsdl:types>
+  <wsdl:message name="getTimeRequest">
+  </wsdl:message>
+  <wsdl:message name="getLatestByRouteRequest">
+    <wsdl:part name="in0" type="xsd:string"/>
+    <wsdl:part name="in1" type="xsd:int"/>
+  </wsdl:message>
+  <wsdl:message name="getAgenciesResponse">
+    <wsdl:part name="getAgenciesReturn" type="intf:ArrayOf_xsd_string"/>
+  </wsdl:message>
+  <wsdl:message name="getTimeResponse">
+    <wsdl:part name="getTimeReturn" type="xsd:long"/>
+  </wsdl:message>
+  <wsdl:message name="getLatestByRouteResponse">
+    <wsdl:part name="getLatestByRouteReturn" type="intf:ArrayOfAvlReport"/>
+  </wsdl:message>
+  <wsdl:message name="getAgenciesRequest">
+  </wsdl:message>
+  <wsdl:portType name="AvlPortType">
+    <wsdl:operation name="getTime">
+      <wsdl:input message="intf:getTimeRequest" name="getTimeRequest"/>
+      <wsdl:output message="intf:getTimeResponse" name="getTimeResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getAgencies">
+      <wsdl:input message="intf:getAgenciesRequest" name="getAgenciesRequest"/>
+      <wsdl:output message="intf:getAgenciesResponse" name="getAgenciesResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getLatestByRoute" parameterOrder="in0 in1">
+      <wsdl:input message="intf:getLatestByRouteRequest" name="getLatestByRouteRequest"/>
+      <wsdl:output message="intf:getLatestByRouteResponse" name="getLatestByRouteResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AvlPortSoapBinding" type="intf:AvlPortType">
+    <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getTime">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getTimeRequest">
+        <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://avl.transit.ws.its.washington.edu" use="encoded"/>
+      </wsdl:input>
+      <wsdl:output name="getTimeResponse">
+        <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://avl.transit.ws.its.washington.edu" use="encoded"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAgencies">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getAgenciesRequest">
+        <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://avl.transit.ws.its.washington.edu" use="encoded"/>
+      </wsdl:input>
+      <wsdl:output name="getAgenciesResponse">
+        <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://avl.transit.ws.its.washington.edu" use="encoded"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLatestByRoute">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getLatestByRouteRequest">
+        <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://avl.transit.ws.its.washington.edu" use="encoded"/>
+      </wsdl:input>
+      <wsdl:output name="getLatestByRouteResponse">
+        <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://avl.transit.ws.its.washington.edu" use="encoded"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AvlService">
+    <wsdl:port binding="intf:AvlPortSoapBinding" name="AvlPort">
+      <wsdlsoap:address location="http://ws.its.washington.edu:9090/transit/avl/services/AvlService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
